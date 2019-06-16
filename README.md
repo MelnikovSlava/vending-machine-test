@@ -11,4 +11,4 @@ npm start
 
 Погодное приложение с возможностью добавления городов.
 
-> ##### Demo https://melnikovslava.github.io/vending-machine-test/index.html
+> ##### Demo https://melnikovslava.github.io/vending-machine-test
