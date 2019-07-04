@@ -1,3 +1,5 @@
+import { createContext } from 'react';
+
 import ProductStore from './product-store';
 
 
@@ -9,4 +11,6 @@ export class RootStore {
   }
 }
 
-export default new RootStore();
+export const Store = new RootStore();
+
+export const Context = createContext<RootStore>(Store);

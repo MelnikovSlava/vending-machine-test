@@ -47,13 +47,14 @@ export default class ProductStore {
             const { productList, currencyList, baseCurrency } = response.data;
 
             productList.forEach((product: IProduct) =>
-              this.productList.set(product.id, product));
+              this.productList.set(product.id, product),
+            );
 
             currencyList.forEach((currency: ICurrency) =>
-              this.currencyList.set(currency.code, currency));
+              this.currencyList.set(currency.code, currency),
+            );
 
             this.baseCurrency = baseCurrency;
-
             this.stage = 'select';
           }
 

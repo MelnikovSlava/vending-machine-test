@@ -1,21 +1,18 @@
-import { inject, observer } from 'mobx-react';
-import * as React from 'react';
+import { observer } from 'mobx-react';
+import React, { Component } from 'react';
 
-import { RootStore } from '../../store/root-store';
+import { Context, RootStore } from '../../store/root-store';
 import ProductItem from './product-item/ProductItem';
 
 import './ProductList.less';
 
 
-interface IProductListProps {
-  rootStore?: RootStore;
-}
-
-@inject('rootStore')
 @observer
-export default class ProductList extends React.Component<IProductListProps, any> {
+export default class ProductList extends Component<any, any> {
+  public static contextType = Context;
+
   public render() {
-    const { productList } = this.props.rootStore.productStore;
+    const { productStore: { productList } } = this.context as RootStore;
     let content;
 
     if (productList.size > 0) {
@@ -26,13 +23,9 @@ export default class ProductList extends React.Component<IProductListProps, any>
       });
 
     } else {
-      content = <p style={{ margin: '50px', fontSize: '20px' }} className="flex">Empty</p>;
+      content = <p className="product-list--empty flex">Empty</p>;
     }
 
-    return (
-      <div className="product-list">
-        {content}
-      </div>
-    );
+    return <div className="product-list">{content}</div>;
   }
 }

@@ -1,48 +1,48 @@
-import { inject, observer } from 'mobx-react';
-import * as React from 'react';
+import { observer } from 'mobx-react';
+import React, { Component } from 'react';
 import { Button, Checkbox, Form, Label } from 'semantic-ui-react';
 
 import { ICurrency } from '../../store/models/currency';
-import { RootStore } from '../../store/root-store';
+import { Context, RootStore } from '../../store/root-store';
 
 import './BuyStage.less';
 
-
-interface IBuyStageProps {
-  rootStore?: RootStore;
-}
 
 interface IBuyStageState {
   currency: null | ICurrency['code'];
 }
 
-@inject('rootStore')
 @observer
-export default class BuyStage extends React.Component<IBuyStageProps, IBuyStageState> {
-  constructor(props: Readonly<IBuyStageProps> | any) {
-    super(props);
-
-    this.state = {
-      currency: props.rootStore.productStore.baseCurrency.code,
-    };
-  }
+export default class BuyStage extends Component<any, IBuyStageState> {
+  public static contextType = Context;
 
   public currencyChange = (e, { value }) => {
     this.setState({ currency: value });
   }
 
   public pay = () => {
-    const { selectedProduct, buyProduct } = this.props.rootStore.productStore;
+    const { productStore: { selectedProduct, buyProduct } } = this.context as RootStore;
 
     buyProduct(selectedProduct, 10);
   }
 
+  public goToBack = () => {
+    const { productStore: { setStage } } = this.context as RootStore;
+
+    setStage('select');
+  }
+
   public render() {
-    const { selectedProduct, productList, setStage, currencyList } = this.props.rootStore.productStore;
-    const { currency } = this.state;
+    const {
+      productStore: {
+        selectedProduct,
+        productList,
+        currencyList,
+        baseCurrency,
+      } } = this.context as RootStore;
 
     const product = productList.get(selectedProduct);
-    const currencyObj = currencyList.get(currency);
+    const currencyObj = currencyList.get(baseCurrency.code);
     const price = (currencyObj.ratio * product.price).toFixed(2);
 
     const radioBtns = [];
@@ -55,11 +55,12 @@ export default class BuyStage extends React.Component<IBuyStageProps, IBuyStageS
             label={key}
             name="checkboxRadioGroup"
             value={key}
-            checked={this.state.currency === key}
+            checked={baseCurrency.code === key}
             onChange={this.currencyChange}
           />
         </Form.Field>,
-      ));
+      ),
+    );
 
     return (
       <div className="buy-stage flex-col">
@@ -68,14 +69,12 @@ export default class BuyStage extends React.Component<IBuyStageProps, IBuyStageS
           <Label as="a" tag={true}>{currencyObj.symbol} {price}</Label>
         </section>
 
-        <Form className="buy-stage--currency">
-          {radioBtns}
-        </Form>
+        <Form className="buy-stage--currency">{radioBtns}</Form>
 
         <Button.Group size="huge" fluid={true}>
           <Button color="teal" onClick={this.pay}>Pay</Button>
           <Button.Or />
-          <Button onClick={() => setStage('select')}>Back</Button>
+          <Button onClick={this.goToBack}>Back</Button>
         </Button.Group>
       </div>
     );

@@ -31,21 +31,11 @@ const productList: IProduct[] = [
     new Product('Long Black', 4),
 ];
 
-const currencyList: Currency[] = [{
-    code: 'USD',
-    symbol: '$',
-    ratio: 1,
-},
-{
-    code: 'EUR',
-    symbol: '€',
-    ratio: 0.89,
-},
-{
-    code: 'RUB',
-    symbol: '₽',
-    ratio: 64.43,
-}];
+const currencyList: Currency[] = [
+    new Currency('USD', '$', 1),
+    new Currency('EUR', '€', 0.89),
+    new Currency('RUB', '₽', 64.43),
+];
 
 const baseCurrency = currencyList[0];
 

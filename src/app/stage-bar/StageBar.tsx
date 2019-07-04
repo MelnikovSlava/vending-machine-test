@@ -1,21 +1,18 @@
-import { inject, observer } from 'mobx-react';
-import * as React from 'react';
+import { observer } from 'mobx-react';
+import React, { Component } from 'react';
 import { Icon, Step } from 'semantic-ui-react';
 
-import { RootStore } from '../../store/root-store';
+import { Context, RootStore } from '../../store/root-store';
 
 import './StageBar.less';
 
 
-interface IStageBarProps {
-  rootStore?: RootStore;
-}
-
-@inject('rootStore')
 @observer
-export default class StageBar extends React.Component<IStageBarProps, any> {
+export default class StageBar extends Component<any, any> {
+  public static contextType = Context;
+
   public render() {
-    const { stage } = this.props.rootStore.productStore;
+    const { productStore: { stage } } = this.context as RootStore;
 
     return (
       <div className="stage-bar">

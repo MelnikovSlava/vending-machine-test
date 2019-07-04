@@ -3,14 +3,14 @@
     "jsx": "react",
     "module": "none",
     "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "target": "es6",
     "sourceMap": true,
     "noImplicitAny": false,
-    "outDir": "./build/",
     "preserveConstEnums": true,
-    "allowJs": true,
+    "allowJs": false,
     "experimentalDecorators": true,
-    "baseUrl": "./"
   },
   "exclude": [
     "node_modules"

@@ -1,8 +1,8 @@
-import { inject, observer } from 'mobx-react';
-import * as React from 'react';
+import { observer } from 'mobx-react';
+import React, { Component } from 'react';
 import { Loader } from 'semantic-ui-react';
 
-import { RootStore } from '../store/root-store';
+import { Context, RootStore } from '../store/root-store';
 import BuyStage from './buy-stage/BuyStage';
 import FinishStage from './finish-stage/FinishStage';
 import ProductList from './product-list/ProductList';
@@ -11,21 +11,18 @@ import StageBar from './stage-bar/StageBar';
 import './App.less';
 
 
-interface IAppProps {
-  rootStore?: RootStore;
-}
-
-@inject('rootStore')
 @observer
-export default class App extends React.Component<IAppProps, any> {
+export default class App extends Component<any, any> {
+  public static contextType = Context;
+
   public componentDidMount() {
-    const { fetchProductInfo } = this.props.rootStore.productStore;
+    const { productStore: { fetchProductInfo } } = this.context as RootStore;
 
     fetchProductInfo();
   }
 
   public render() {
-    const { stage, isLoading, error } = this.props.rootStore.productStore;
+    const { productStore: { stage, isLoading, error } } = this.context;
     let content;
 
     if (isLoading) {
@@ -55,11 +52,9 @@ export default class App extends React.Component<IAppProps, any> {
     }
 
     return (
-      <main className="app-container">
+      <main className="app">
         <StageBar />
-        <section className="content-container">
-          {content}
-        </section>
+        <section className="app--content">{content}</section>
       </main>
     );
   }
