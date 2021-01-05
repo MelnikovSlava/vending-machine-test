@@ -57,7 +57,7 @@
     "webpack-dotenv-extended-plugin": "^1.0.0"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "axios-mock-adapter": "^1.17.0",
     "classnames": "^2.2.6",
     "mobx": "^5.10.1",
